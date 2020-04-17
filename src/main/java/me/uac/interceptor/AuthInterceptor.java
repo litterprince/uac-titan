@@ -71,13 +71,13 @@ public class AuthInterceptor implements HandlerInterceptor {
                 }
             }
             final String token = authHeader.substring(7);
-            ThreadLocalMap.put(UacTokenConstants.JWT_TOKEN, token);
             AuthUserDTO authUserDTO = uacTokenService.getAuthUserByToken(response, token);
             Boolean isAllow = validateAndSettingValidateCode(authUserDTO);
             if (!isAllow) {
                 throw new BusinessException(UacExceptionEnums.UAC_TOKEN_ERROR_10009.code(), UacExceptionEnums.UAC_TOKEN_ERROR_10009.msg());
             }
             ThreadLocalMap.put(UacTokenConstants.AUTH_USER_DTO, authUserDTO);
+            ThreadLocalMap.put(UacTokenConstants.JWT_TOKEN, token);
         } catch (Exception e) {
             handleException(request, response, ERRORMSG);
             return false;
